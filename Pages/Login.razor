@@ -1,4 +1,4 @@
-﻿
+﻿@layout LoginLayout
 @page "/"
 @using CENTRO_SALUD_PATZICIA.Authentication
 @using Microsoft.AspNetCore.Components.Authorization
@@ -50,7 +50,7 @@
 
     private async Task Authenticate()
     {
-        var userAccount = userAccountService.GetByUserName(model.UserName);
+        var userAccount = userAccountService.GetByUserName(model.UserName,model.Password);
         if (userAccount == null || userAccount.Password != model.Password)
         {
             await js.InvokeVoidAsync("alert","Usuario o Contraseña Invalida");
@@ -61,7 +61,8 @@
         await customAuthStateProvider.UpdateAuthenticationState(new UserSession
         {
             UserName = userAccount.userName,
-            Role = userAccount.Role
+            Role= userAccount.Role
+            
         });
 
         navigation.NavigateTo("/inicio", true);

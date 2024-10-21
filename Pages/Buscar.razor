@@ -2,177 +2,116 @@
 	@using Microsoft.AspNetCore.Components.Web
 	@inject NavigationManager Navigation
 	@inject AuthenticationStateProvider AuthStateProvider
+@attribute [Authorize(Roles = "Admin")]
 <PageTitle>VISUALIZAR REGISTROS</PageTitle>
-<AuthorizeView>
-	<Authorized>
-		<div class="header-container">
-			<div class="top-banner">
-				<span>ESTAMOS PARA SERVIR Y LA POBLACIÓN Y AYUDARLOS A MEJORAR SU CALIDAD DE VIDA</span>
-				<a href="/inicio" class="btn btn-danger exit-button">Volver</a>
-			</div>
-			<div class="main-title">
-				CENTRO DE SALUD PATZICIA
-			</div>
-		</div>
 
-		<h4 class="text-center">user está en el módulo de Visualización</h4>
+<div class="header-container">
+    <div class="top-banner">
+        <span>ESTAMOS PARA SERVIR Y LA POBLACIÓN Y AYUDARLOS A MEJORAR SU CALIDAD DE VIDA</span>
+        <a href="/inicio" class="btn btn-danger exit-button">Volver</a>
+    </div>
+    <div class="main-title">
+        CENTRO DE SALUD PATZICIA
+    </div>
+</div>
 
-		<br />
-		<br />
-		<br />
-		<br />
-		<div class="table-responsive mt-4">
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th>Día de la Consulta</th>
-						<th>No. Historia Clínica</th>
-						<th>Nombre y Apellidos del Paciente</th>
-						<th>CUI</th>
-						<th>Sexo</th>
-						<th>Pueblo</th>
-						<th>Comunidad Lingüística</th>
-						<th>Fecha de Nacimiento</th>
-						<th>Discapacidad</th>
-						<th>Orientación Sexual</th>
-						<th>Escolaridad</th>
-						<th>Profesion u oficio o condición</th>
-						<th>Comunidad y/o dirección exacta</th>
-						<th>Municipio</th>
-						<th>Agricola migrante</th>
-						<th>Consulta</th>
-						<th>Control</th>
-						<th>Semana de Gestación</th>
-						<th>Viene</th>
-						<th>Fue</th>
-						<th>Referido a </th>
-						<th>Descripción de diagnóstico/control</th>
-						<th>Código CIE - 10</th>
-						<th>Descripción Tratamiento</th>
-						<th>Presentación tratamiento</th>
-						<th>Cantidad Recetada</th>
-						<th>Lugar Notificación</th>
-						<th>Número Notificación</th>
-						<th>Nombres y apellidos del acompañante</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (var consulta in obtener)
-					{
-						<tr>
-							<td>@consulta.fechaCreacionConsulta</td>
-							<td>@consulta.IdConsulta</td>
-							<td>@consulta.nombresYapellidos</td>
-							<td>@consulta.cui</td>
-							<td>@consulta.sexo</td>
-							<td>@consulta.pueblo</td>
-							<td>@consulta.comunidadLinguistica</td>
-							<td>@consulta.fechaNacimiento</td>
-							<td>@consulta.discapacidad</td>
-							<td>@consulta.orientacionSexual</td>
-							<td>@consulta.escolaridad</td>
-							<td>@consulta.profesion</td>
-							<td>@consulta.comunidadOdireccion</td>
-							<td>@consulta.municipio</td>
-							<td>@consulta.agricolaMigrante</td>
-							<td>@consulta.consultaDescripcion</td>
-							<td>@consulta.controlEstablecido</td>
-							<td>@consulta.semanaGestacion   </td>
-							<td>@consulta.descripcionViene</td>
-							<td>@consulta.descripcionFue</td>
-							<td>@consulta.referido</td>
-							<td>@consulta.descripcionDiagnosticoControl</td>
-							<td>@consulta.codigoCie</td>
-							<td>@consulta.tratamiento</td>
-							<td>@consulta.presentacion</td>
-							<td>@consulta.cantidadREcetada</td>
-							<td>@consulta.lugarNotificacion</td>
-							<td>@consulta.numeroNotificacion</td>
-							<td>@consulta.nombreYapellidosAcompañante</td>
+<h4 class="text-center">user está en el módulo de Visualización</h4>
 
-						</tr>
-					}
-				</tbody>
-			</table>
-		</div>
-		@code {
+<br />
+<br />
+<br />
+<br />
+<div class="table-responsive mt-4">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Día de la Consulta</th>
+                <th>No. Historia Clínica</th>
+                <th>Nombre y Apellidos del Paciente</th>
+                <th>CUI</th>
+                <th>Sexo</th>
+                <th>Pueblo</th>
+                <th>Comunidad Lingüística</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Discapacidad</th>
+                <th>Orientación Sexual</th>
+                <th>Escolaridad</th>
+                <th>Profesion u oficio o condición</th>
+                <th>Comunidad y/o dirección exacta</th>
+                <th>Municipio</th>
+                <th>Agricola migrante</th>
+                <th>Consulta</th>
+                <th>Control</th>
+                <th>Semana de Gestación</th>
+                <th>Viene</th>
+                <th>Fue</th>
+                <th>Referido a </th>
+                <th>Descripción de diagnóstico/control</th>
+                <th>Código CIE - 10</th>
+                <th>Descripción Tratamiento</th>
+                <th>Presentación tratamiento</th>
+                <th>Cantidad Recetada</th>
+                <th>Lugar Notificación</th>
+                <th>Número Notificación</th>
+                <th>Nombres y apellidos del acompañante</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var consulta in obtener)
+            {
+                <tr>
+                    <td>@consulta.fechaCreacionConsulta</td>
+                    <td>@consulta.IdConsulta</td>
+                    <td>@consulta.nombresYapellidos</td>
+                    <td>@consulta.cui</td>
+                    <td>@consulta.sexo</td>
+                    <td>@consulta.pueblo</td>
+                    <td>@consulta.comunidadLinguistica</td>
+                    <td>@consulta.fechaNacimiento</td>
+                    <td>@consulta.discapacidad</td>
+                    <td>@consulta.orientacionSexual</td>
+                    <td>@consulta.escolaridad</td>
+                    <td>@consulta.profesion</td>
+                    <td>@consulta.comunidadOdireccion</td>
+                    <td>@consulta.municipio</td>
+                    <td>@consulta.agricolaMigrante</td>
+                    <td>@consulta.consultaDescripcion</td>
+                    <td>@consulta.controlEstablecido</td>
+                    <td>@consulta.semanaGestacion   </td>
+                    <td>@consulta.descripcionViene</td>
+                    <td>@consulta.descripcionFue</td>
+                    <td>@consulta.referido</td>
+                    <td>@consulta.descripcionDiagnosticoControl</td>
+                    <td>@consulta.codigoCie</td>
+                    <td>@consulta.tratamiento</td>
+                    <td>@consulta.presentacion</td>
+                    <td>@consulta.cantidadREcetada</td>
+                    <td>@consulta.lugarNotificacion</td>
+                    <td>@consulta.numeroNotificacion</td>
+                    <td>@consulta.nombreYapellidosAcompañante</td>
 
-		List<ModeloObtenerRegistro> obtener { get; set; } = null!;
-		protected override void OnInitialized()
-		{
-			obtener = ConsultasSql.obtenerRegistrosDiario();
-		}
-		}
-	</Authorized>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@code {
 
-	<NotAuthorized>
-		<style>
-			/* Estilo inicial del mensaje */
-			.no-acceso-text {
-				font-size: 1.5rem;
-				font-weight: bold;
-				color: red;
-				opacity: 0;
-				transform: translateY(-20px);
-				transition: opacity 1s ease-in-out, transform 0.1s ease-in-out;
-			}
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
+    List<ModeloObtenerRegistro> obtener { get; set; } = null!;
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var authState = await authenticationState;
+            var user = authState;
+            obtener = ConsultasSql.obtenerRegistrosDiario();
+        }
+        catch (Exception)
+        {
 
-				/* Estado visible con animación */
-				.no-acceso-text.show {
-					opacity: 1;
-					transform: translateY(0);
-				}
 
-			/* Estilo general del contenedor */
-			.container {
-				margin-top: 50px;
-			}
-
-			/* Botón con animación al hacer hover */
-			.btn-primary {
-				transition: background-color 0.3s ease, transform 0.2s;
-			}
-
-				.btn-primary:hover {
-					background-color: #0056b3;
-					transform: scale(1.05);
-				}
-		</style>
-
-		<div class="container text-center">
-			<h2>Estimado no tiene acceso al sistema</h2>
-			<p class="lead mt-3">
-				Ingrese sus credenciales correctamente o solicite credenciales al encargado
-			</p>
-
-			<button class="btn btn-primary mt-4" @onclick=NavegarAListado>
-				Ir a Login
-			</button>
-
-			<!-- Texto con animación automática -->
-			<p class="no-acceso-text @(animacionIniciada ? "show" : "") mt-5">
-				<span>UPS...</span> no tienes acceso
-			</p>
-		</div>
-
-		@code {
-		private bool animacionIniciada = false;
-
-		protected override async Task OnAfterRenderAsync(bool firstRender)
-		{
-			if (firstRender)
-			{
-				await Task.Delay(500);
-				animacionIniciada = true;
-
-				StateHasChanged();
-			}
-		}
-		private void NavegarAListado()
-		{
-			Navigation.NavigateTo("/");
-		}
-		}
-
-	</NotAuthorized>
-</AuthorizeView>
+        }
+    }
+}

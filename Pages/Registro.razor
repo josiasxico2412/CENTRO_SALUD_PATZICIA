@@ -1,433 +1,371 @@
 ﻿@page "/registros"
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthStateProvider
-
+@attribute [Authorize(Roles = "Admin")]
 <PageTitle>REGISTROS</PageTitle>
 
-<AuthorizeView>
-	<Authorized>
-		<div class="header-container">
-			<div class="top-banner">
-				<span>ESTAMOS PARA SERVIR Y LA POBLACIÓN Y AYUDARLOS A MEJORAR SU CALIDAD DE VIDA</span>
-				<a href="/inicio" class="btn btn-danger exit-button">Volver</a>
-			</div>
-			<div class="main-title">
-				CENTRO DE SALUD PATZICIA
-			</div>
-		</div>
 
-		<div class="container my-5">
-			<h2 class="text-center mb-4">Registro Diario de Consulta en Centro de Salud</h2>
+<div class="header-container">
+    <div class="top-banner">
+        <span>ESTAMOS PARA SERVIR Y LA POBLACIÓN Y AYUDARLOS A MEJORAR SU CALIDAD DE VIDA</span>
+        <a href="/inicio" class="btn btn-danger exit-button">Volver</a>
+    </div>
+    <div class="main-title">
+        CENTRO DE SALUD PATZICIA
+    </div>
+</div>
 
-			<!-- Datos del Paciente -->
-			<h4>DATOS DEL PACIENTE</h4>
-			<div class="row g-3">
-				<div class="col-md-6">
-					<label for="nombresApellidos" class="form-label">Nombres y Apellidos del Paciente</label>
-					<input type="text" class="form-control" @bind-value="Formulario.nombres_y_apellidos" id="nombresApellidos" placeholder="Ingrese los nombres y apellidos del paciente">
-				</div>
-				<div class="col-md-6">
-					<label for="cui" class="form-label">CUI Código Único de Identificación</label>
-					<div class="input-group">
-						<input type="text" class="form-control" @bind-value="Formulario.cui" id="cui" placeholder="Ingrese el CUI" />
-						<button type="button" class="btn btn-danger" @onclick="() => BuscarRegistro(busquedaModel.DPI)">BUSCAR</button>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<label for="sexo" class="form-label">Sexo</label>
-					<select class="form-select" id="sexo" @bind="Formulario.sexo">
-						<option selected>Seleccione...</option>
-						@foreach (var item in Genero)
-						{
+<div class="container my-5">
+    <h2 class="text-center mb-4">Registro Diario de Consulta en Centro de Salud</h2>
 
-							<option value="@item.idSexo">@item.descripcion</option>
-						}
+    <!-- Datos del Paciente -->
+    <h4>DATOS DEL PACIENTE</h4>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label for="nombresApellidos" class="form-label">Nombres y Apellidos del Paciente</label>
+            <input type="text" class="form-control" @bind-value="Formulario.nombres_y_apellidos" id="nombresApellidos" placeholder="Ingrese los nombres y apellidos del paciente">
+        </div>
+        <div class="col-md-6">
+            <label for="cui" class="form-label">CUI Código Único de Identificación</label>
+            <div class="input-group">
+                <input type="text" class="form-control" @bind-value="Formulario.cui" id="cui" placeholder="Ingrese el CUI" />
+                <button type="button" class="btn btn-danger" @onclick="() => BuscarRegistro(busquedaModel.DPI)">BUSCAR</button>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label for="sexo" class="form-label">Sexo</label>
+            <select class="form-select" id="sexo" @bind="Formulario.sexo">
+                <option selected>Seleccione...</option>
+                @foreach (var item in Genero)
+                {
 
-					</select>
-				</div>
-				<div class="col-md-3">
-					<label for="pueblo" class="form-label">Pueblo</label>
-					<select class="form-select" id="pueblo" @bind="Formulario.pueblo">
-						<option selected>Seleccione...</option>
-						@foreach (var item in Pueblo)
-						{
+                    <option value="@item.idSexo">@item.descripcion</option>
+                }
 
-							<option value="@item.idPueblo">@item.descripcion</option>
-						}
-					</select>
-				</div>
-				<div class="col-md-3">
-					<label for="comunidadLinguistica" class="form-label">C.Lingüística</label>
-					<input type="text" class="form-control" @bind-value="Formulario.comunidad_linguistica" id="comunidadLinguistica" placeholder="Ingrese Comunidad Lingüística">
-				</div>
-				<div class="col-md-3">
-					<label for="fecSqlcimiento" class="form-label">Fecha de Nacimiento</label>
-					<input type="date" class="form-control" @bind-value="Formulario.fecha_nacimiento" id="fecSqlcimiento" placeholder="Ingrese Fecha de Nacimiento">
-				</div>
-				<div class="col-md-3">
-					<label for="discapacidad" class="form-label">Discapacidad</label>
-					<select class="form-select" id="discapacidad" @bind="Formulario.discapacidad">
-						<option selected>Seleccione...</option>
-						@foreach (var item in Discapacidad)
-						{
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="pueblo" class="form-label">Pueblo</label>
+            <select class="form-select" id="pueblo" @bind="Formulario.pueblo">
+                <option selected>Seleccione...</option>
+                @foreach (var item in Pueblo)
+                {
 
-							<option value="@item.idDiscapacidad">@item.descripcion</option>
-						}
-					</select>
-				</div>
-				<div class="col-md-3">
-					<label for="orientacionSexual" class="form-label">Orientación Sexual</label>
-					<select class="form-select" id="orientacionSexual" @bind="Formulario.orientacion_sexual">
-						<option selected>Seleccione...</option>
-						@foreach (var item in OrientacionSexual)
-						{
+                    <option value="@item.idPueblo">@item.descripcion</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="comunidadLinguistica" class="form-label">C.Lingüística</label>
+            <input type="text" class="form-control" @bind-value="Formulario.comunidad_linguistica" id="comunidadLinguistica" placeholder="Ingrese Comunidad Lingüística">
+        </div>
+        <div class="col-md-3">
+            <label for="fecSqlcimiento" class="form-label">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" @bind-value="Formulario.fecha_nacimiento" id="fecSqlcimiento" placeholder="Ingrese Fecha de Nacimiento">
+        </div>
+        <div class="col-md-3">
+            <label for="discapacidad" class="form-label">Discapacidad</label>
+            <select class="form-select" id="discapacidad" @bind="Formulario.discapacidad">
+                <option selected>Seleccione...</option>
+                @foreach (var item in Discapacidad)
+                {
 
-							<option value="@item.idOrientacionSexual">@item.descripcion</option>
-						}
-					</select>
-				</div>
-				<div class="col-md-3">
-					<label for="escolaridad" class="form-label">Escolaridad</label>
-					<select class="form-select" id="escolaridad" @bind="Formulario.escolaridad">
-						<option selected>Seleccione...</option>
-						@foreach (var item in Escolaridad)
-						{
+                    <option value="@item.idDiscapacidad">@item.descripcion</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="orientacionSexual" class="form-label">Orientación Sexual</label>
+            <select class="form-select" id="orientacionSexual" @bind="Formulario.orientacion_sexual">
+                <option selected>Seleccione...</option>
+                @foreach (var item in OrientacionSexual)
+                {
 
-							<option value="@item.idEscolaridad">@item.descripcion</option>
-						}
-					</select>
-				</div>
-				<div class="col-md-3">
-					<label for="profesion" class="form-label">Profesión u Oficio</label>
-					<select class="form-select" id="escolaridad" @bind="Formulario.profesion_u_oficio">
-						<option selected>Seleccione...</option>
-						@foreach (var item in Profesion)
-						{
-							<option value="@item.idProfesion">@item.descripcion</option>
-						}
-					</select>
-				</div>
-			</div>
+                    <option value="@item.idOrientacionSexual">@item.descripcion</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="escolaridad" class="form-label">Escolaridad</label>
+            <select class="form-select" id="escolaridad" @bind="Formulario.escolaridad">
+                <option selected>Seleccione...</option>
+                @foreach (var item in Escolaridad)
+                {
 
-			<hr class="my-4">
-			<!-- SIGNOS VITALES -->
-			<h4>Signos Vitales</h4>
-			<div class="row g-3">
-				<div class="col-md-4">
-					<label for="presionArterial" class="form-label">Presión Arterial (mmHg)</label>
-					<input type="text" class="form-control" @bind-value="Formulario.presion_arterial" id="presionArterial" placeholder="Ej: 120/80">
-				</div>
-				<div class="col-md-4">
-					<label for="frecuenciaCardiaca" class="form-label">Frecuencia Cardiaca (latidos/min)</label>
-					<input type="number" class="form-control" @bind-value="Formulario.frecuencia_cardiaca" id="frecuenciaCardiaca" placeholder="Ej: 75">
-				</div>
-				<div class="col-md-4">
-					<label for="frecuenciaRespiratoria" class="form-label">Frecuencia Respiratoria (respiraciones/min)</label>
-					<input type="number" class="form-control" @bind-value="Formulario.frecuencua_respiratoria" id="frecuenciaRespiratoria" placeholder="Ej: 16">
-				</div>
-				<div class="col-md-4">
-					<label for="temperatura" class="form-label">Temperatura Corporal (°C)</label>
-					<input type="number" class="form-control" id="temperatura" @bind-value="Formulario.temperatura" placeholder="Ej: 37.0">
-				</div>
-				<div class="col-md-4">
-					<label for="saturacionOxigeno" class="form-label">Saturación de Oxígeno (%)</label>
-					<input type="number" class="form-control" id="saturacionOxigeno" @bind-value="Formulario.saturacion_oxigeno" placeholder="Ej: 98">
-				</div>
-				<div class="col-md-4">
-					<label for="peso" class="form-label">Peso (lb)</label>
-					<input type="number" step="0.1" class="form-control" id="peso" @bind-value="Formulario.peso" placeholder="Ej: 70.5">
-				</div>
-				<div class="col-md-4">
-					<label for="altura" class="form-label">Altura (cm)</label>
-					<input type="number" class="form-control" id="altura" @bind-value="Formulario.altura" placeholder="Ej: 170">
-				</div>
-			</div>
-			<hr class="my-4">
-			<!-- DATOS COMPLEMENTARIOS DEL PACIENTE -->
-			<h4>DATOS COMPLEMENTARIOS DEL PACIENTE</h4>
-			<div class="row g-3">
-				<div class="col-md-6">
-					<label for="direccion" class="form-label">Comunidad y/o Dirección</label>
-					<input type="text" class="form-control" id="direccion" @bind-value="Formulario.comunidad_direccion" placeholder="Ingrese la dirección">
-				</div>
-				<div class="col-md-6">
-					<label for="municipioComplementario" class="form-label">Municipio</label>
-					<input type="text" class="form-control" id="municipioComplementario" @bind-value="Formulario.municipio" placeholder="Ingrese el Municipio">
-				</div>
-				<div class="col-md-3">
-					<label for="agricolaMigrante" class="form-label">Agrícola Migrante</label>
-					<select class="form-select" id="agricolaMigrante" @bind="Formulario.agricola_migrante">
-						<option selected>Seleccione...</option>
-						@foreach (var item in Agricola)
-						{
+                    <option value="@item.idEscolaridad">@item.descripcion</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="profesion" class="form-label">Profesión u Oficio</label>
+            <select class="form-select" id="escolaridad" @bind="Formulario.profesion_u_oficio">
+                <option selected>Seleccione...</option>
+                @foreach (var item in Profesion)
+                {
+                    <option value="@item.idProfesion">@item.descripcion</option>
+                }
+            </select>
+        </div>
+    </div>
 
-							<option value="@item.idAgricolaMigrante">@item.descripcion</option>
-						}
-					</select>
-				</div>
-				<div class="col-md-3">
-					<label for="consulta" class="form-label">Consulta</label>
-					<select class="form-select" id="consulta" @bind="Formulario.consulta">
-						<option selected>Seleccione...</option>
-						@foreach (var item in Consulta)
-						{
+    <hr class="my-4">
+    <!-- SIGNOS VITALES -->
+    <h4>Signos Vitales</h4>
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label for="presionArterial" class="form-label">Presión Arterial (mmHg)</label>
+            <input type="text" class="form-control" @bind-value="Formulario.presion_arterial" id="presionArterial" placeholder="Ej: 120/80">
+        </div>
+        <div class="col-md-4">
+            <label for="frecuenciaCardiaca" class="form-label">Frecuencia Cardiaca (latidos/min)</label>
+            <input type="number" class="form-control" @bind-value="Formulario.frecuencia_cardiaca" id="frecuenciaCardiaca" placeholder="Ej: 75">
+        </div>
+        <div class="col-md-4">
+            <label for="frecuenciaRespiratoria" class="form-label">Frecuencia Respiratoria (respiraciones/min)</label>
+            <input type="number" class="form-control" @bind-value="Formulario.frecuencua_respiratoria" id="frecuenciaRespiratoria" placeholder="Ej: 16">
+        </div>
+        <div class="col-md-4">
+            <label for="temperatura" class="form-label">Temperatura Corporal (°C)</label>
+            <input type="number" class="form-control" id="temperatura" @bind-value="Formulario.temperatura" placeholder="Ej: 37.0">
+        </div>
+        <div class="col-md-4">
+            <label for="saturacionOxigeno" class="form-label">Saturación de Oxígeno (%)</label>
+            <input type="number" class="form-control" id="saturacionOxigeno" @bind-value="Formulario.saturacion_oxigeno" placeholder="Ej: 98">
+        </div>
+        <div class="col-md-4">
+            <label for="peso" class="form-label">Peso (lb)</label>
+            <input type="number" step="0.1" class="form-control" id="peso" @bind-value="Formulario.peso" placeholder="Ej: 70.5">
+        </div>
+        <div class="col-md-4">
+            <label for="altura" class="form-label">Altura (cm)</label>
+            <input type="number" class="form-control" id="altura" @bind-value="Formulario.altura" placeholder="Ej: 170">
+        </div>
+    </div>
+    <hr class="my-4">
+    <!-- DATOS COMPLEMENTARIOS DEL PACIENTE -->
+    <h4>DATOS COMPLEMENTARIOS DEL PACIENTE</h4>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label for="direccion" class="form-label">Comunidad y/o Dirección</label>
+            <input type="text" class="form-control" id="direccion" @bind-value="Formulario.comunidad_direccion" placeholder="Ingrese la dirección">
+        </div>
+        <div class="col-md-6">
+            <label for="municipioComplementario" class="form-label">Municipio</label>
+            <input type="text" class="form-control" id="municipioComplementario" @bind-value="Formulario.municipio" placeholder="Ingrese el Municipio">
+        </div>
+        <div class="col-md-3">
+            <label for="agricolaMigrante" class="form-label">Agrícola Migrante</label>
+            <select class="form-select" id="agricolaMigrante" @bind="Formulario.agricola_migrante">
+                <option selected>Seleccione...</option>
+                @foreach (var item in Agricola)
+                {
 
-							<option value="@item.idConsulta">@item.descripcion</option>
-						}
-					</select>
-				</div>
-				<div class="col-md-3">
-					<label for="control" class="form-label">Control</label>
-					<select class="form-select" id="control" @bind="Formulario.control">
-						<option selected>Seleccione...</option>
-						@foreach (var item in Control)
-						{
+                    <option value="@item.idAgricolaMigrante">@item.descripcion</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="consulta" class="form-label">Consulta</label>
+            <select class="form-select" id="consulta" @bind="Formulario.consulta">
+                <option selected>Seleccione...</option>
+                @foreach (var item in Consulta)
+                {
 
-							<option value="@item.idControlEstablecido">@item.descripcion</option>
-						}
-					</select>
-				</div>
-				<div class="col-md-3">
-					<label for="semanaGestacion" class="form-label">Semana de Gestación</label>
-					<input type="number" class="form-control" id="semanaGestacion" @bind-value="Formulario.semana_gestacion" placeholder="Número de Semana">
-				</div>
-			</div>
+                    <option value="@item.idConsulta">@item.descripcion</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="control" class="form-label">Control</label>
+            <select class="form-select" id="control" @bind="Formulario.control">
+                <option selected>Seleccione...</option>
+                @foreach (var item in Control)
+                {
 
-			<hr class="my-4">
+                    <option value="@item.idControlEstablecido">@item.descripcion</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="semanaGestacion" class="form-label">Semana de Gestación</label>
+            <input type="number" class="form-control" id="semanaGestacion" @bind-value="Formulario.semana_gestacion" placeholder="Número de Semana">
+        </div>
+    </div>
 
-			<!-- REFERENCIA -->
-			<h4>Referencia</h4>
-			<div class="row g-3">
-				<div class="col-md-4">
-					<label for="viene" class="form-label">Viene</label>
-					<select class="form-select" id="viene" @bind="Formulario.viene">
-						<option selected>Seleccione...</option>
-						@foreach (var item in Vienes)
-						{
-							<option value="@item.idViene">@item.descripcion</option>
-						}
-					</select>
-				</div>
-				<div class="col-md-4">
-					<label for="fue" class="form-label">Fue</label>
-					<select class="form-select" id="fue" @bind="Formulario.fue">
-						<option selected>Seleccione...</option>
-						@foreach (var item in Fue)
-						{
+    <hr class="my-4">
 
-							<option value="@item.idFue">@item.descripcion</option>
-						}
-					</select>
-				</div>
-				<div class="col-md-4">
-					<label for="referidoA" class="form-label">Referido a</label>
-					<input type="text" class="form-control" id="referidoA" @bind-value="Formulario.referido" placeholder="Ingrese el lugar de referencia">
-				</div>
-			</div>
+    <!-- REFERENCIA -->
+    <h4>Referencia</h4>
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label for="viene" class="form-label">Viene</label>
+            <select class="form-select" id="viene" @bind="Formulario.viene">
+                <option selected>Seleccione...</option>
+                @foreach (var item in Vienes)
+                {
+                    <option value="@item.idViene">@item.descripcion</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="fue" class="form-label">Fue</label>
+            <select class="form-select" id="fue" @bind="Formulario.fue">
+                <option selected>Seleccione...</option>
+                @foreach (var item in Fue)
+                {
 
-			<hr class="my-4">
+                    <option value="@item.idFue">@item.descripcion</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="referidoA" class="form-label">Referido a</label>
+            <input type="text" class="form-control" id="referidoA" @bind-value="Formulario.referido" placeholder="Ingrese el lugar de referencia">
+        </div>
+    </div>
 
-			<!-- MOTIVO DE CONSULTA Y/O CLASIFICACIÓN -->
-			<h4>Motivo de Consulta y/o Clasificación</h4>
-			<div class="row g-3">
-				<div class="col-md-8">
-					<label for="descripcionDiagnostico" class="form-label">Descripción de Diagnóstico/Control</label>
-					<input type="text" class="form-control" id="descripcionDiagnostico" @bind-value="Formulario.diadnostico" placeholder="Ingrese la descripción del diagnóstico o control">
-				</div>
-				<div class="col-md-4">
-					<label for="codigoCIE10" class="form-label">Código CIE-10</label>
-					<input type="text" class="form-control" id="codigoCIE10" @bind-value="Formulario.codigo_cie" placeholder="Ingrese el código CIE-10">
-				</div>
-			</div>
+    <hr class="my-4">
 
-			<hr class="my-4">
+    <!-- MOTIVO DE CONSULTA Y/O CLASIFICACIÓN -->
+    <h4>Motivo de Consulta y/o Clasificación</h4>
+    <div class="row g-3">
+        <div class="col-md-8">
+            <label for="descripcionDiagnostico" class="form-label">Descripción de Diagnóstico/Control</label>
+            <input type="text" class="form-control" id="descripcionDiagnostico" @bind-value="Formulario.diadnostico" placeholder="Ingrese la descripción del diagnóstico o control">
+        </div>
+        <div class="col-md-4">
+            <label for="codigoCIE10" class="form-label">Código CIE-10</label>
+            <input type="text" class="form-control" id="codigoCIE10" @bind-value="Formulario.codigo_cie" placeholder="Ingrese el código CIE-10">
+        </div>
+    </div>
 
-			<!-- TRATAMIENTO Y/O MEDICAMENTO FORMULADO -->
-			<h4>Tratamiento y/o Medicamento Formulado</h4>
-			<div class="row g-3">
-				<div class="col-md-6">
-					<label for="descripcionMedicamento" class="form-label">Descripción</label>
-					<input type="text" class="form-control" id="descripcionMedicamento" @bind-value="Formulario.tratamiento_descripcion" placeholder="Ingrese la descripción del tratamiento o medicamento">
-				</div>
-				<div class="col-md-3">
-					<label for="presentacion" class="form-label">Presentación</label>
-					<input type="text" class="form-control" id="presentacion" @bind-value="Formulario.tratamiento_presentacion" placeholder="Ingrese la presentación">
-				</div>
-				<div class="col-md-3">
-					<label for="cantidadRecetada" class="form-label">Cantidad Recetada</label>
-					<input type="text" class="form-control" id="cantidadRecetada" @bind-value="Formulario.cantidad_recetada" placeholder="Ingrese la cantidad">
-				</div>
-			</div>
+    <hr class="my-4">
 
-			<hr class="my-4">
+    <!-- TRATAMIENTO Y/O MEDICAMENTO FORMULADO -->
+    <h4>Tratamiento y/o Medicamento Formulado</h4>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label for="descripcionMedicamento" class="form-label">Descripción</label>
+            <input type="text" class="form-control" id="descripcionMedicamento" @bind-value="Formulario.tratamiento_descripcion" placeholder="Ingrese la descripción del tratamiento o medicamento">
+        </div>
+        <div class="col-md-3">
+            <label for="presentacion" class="form-label">Presentación</label>
+            <input type="text" class="form-control" id="presentacion" @bind-value="Formulario.tratamiento_presentacion" placeholder="Ingrese la presentación">
+        </div>
+        <div class="col-md-3">
+            <label for="cantidadRecetada" class="form-label">Cantidad Recetada</label>
+            <input type="text" class="form-control" id="cantidadRecetada" @bind-value="Formulario.cantidad_recetada" placeholder="Ingrese la cantidad">
+        </div>
+    </div>
 
-			<!-- NOTIFICACIÓN -->
-			<h4>Notificación</h4>
-			<div class="row g-3">
-				<div class="col-md-6">
-					<label for="lugarNotificacion" class="form-label">Lugar</label>
-					<input type="text" class="form-control" id="lugarNotificacion" @bind-value="Formulario.lugar_notificacion" placeholder="Ingrese el lugar de notificación">
-				</div>
-				<div class="col-md-6">
-					<label for="numeroNotificacion" class="form-label">Número</label>
-					<input type="text" class="form-control" id="numeroNotificacion" @bind-value="Formulario.numero_notificacion" placeholder="Ingrese el número de notificación">
-				</div>
-			</div>
+    <hr class="my-4">
 
-			<hr class="my-4">
+    <!-- NOTIFICACIÓN -->
+    <h4>Notificación</h4>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label for="lugarNotificacion" class="form-label">Lugar</label>
+            <input type="text" class="form-control" id="lugarNotificacion" @bind-value="Formulario.lugar_notificacion" placeholder="Ingrese el lugar de notificación">
+        </div>
+        <div class="col-md-6">
+            <label for="numeroNotificacion" class="form-label">Número</label>
+            <input type="text" class="form-control" id="numeroNotificacion" @bind-value="Formulario.numero_notificacion" placeholder="Ingrese el número de notificación">
+        </div>
+    </div>
 
-			<!-- ACOMPAÑANTE -->
-			<h4>ACOMPAÑANTE</h4>
-			<div class="row g-3">
-				<div class="col-md-12">
-					<label for="nombresAcompanante" class="form-label">Nombres y Apellidos del Acompañante</label>
-					<input type="text" class="form-control" id="nombresAcompanante" @bind-value="Formulario.nombres_y_apellidos_acompañante" placeholder="Ingrese los nombres y apellidos del acompañante">
-				</div>
-			</div>
+    <hr class="my-4">
 
-			<hr class="my-4">
+    <!-- ACOMPAÑANTE -->
+    <h4>ACOMPAÑANTE</h4>
+    <div class="row g-3">
+        <div class="col-md-12">
+            <label for="nombresAcompanante" class="form-label">Nombres y Apellidos del Acompañante</label>
+            <input type="text" class="form-control" id="nombresAcompanante" @bind-value="Formulario.nombres_y_apellidos_acompañante" placeholder="Ingrese los nombres y apellidos del acompañante">
+        </div>
+    </div>
 
-			<div class="row mt-4">
-				<div class="col-12 text-center">
-					<button class="btn btn-outline-info" @onclick="InsertForm">GUARDAR REGISTRO</button>
-					<button type="button" class="btn btn-outline-danger">CANCELAR</button>
-				</div>
-			</div>
-		</div>
-	</Authorized>
+    <hr class="my-4">
 
-	<NotAuthorized>
-		<style>
-			/* Estilo inicial del mensaje */
-			.no-acceso-text {
-				font-size: 1.5rem;
-				font-weight: bold;
-				color: red;
-				opacity: 0;
-				transform: translateY(-20px);
-				transition: opacity 1s ease-in-out, transform 0.1s ease-in-out;
-			}
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <button class="btn btn-outline-info" @onclick="InsertForm">GUARDAR REGISTRO</button>
+            <button type="button" class="btn btn-outline-danger">CANCELAR</button>
+        </div>
+    </div>
+</div>
 
-				/* Estado visible con animación */
-				.no-acceso-text.show {
-					opacity: 1;
-					transform: translateY(0);
-				}
-
-			/* Estilo general del contenedor */
-			.container {
-				margin-top: 50px;
-			}
-
-			/* Botón con animación al hacer hover */
-			.btn-primary {
-				transition: background-color 0.3s ease, transform 0.2s;
-			}
-
-				.btn-primary:hover {
-					background-color: #0056b3;
-					transform: scale(1.05);
-				}
-		</style>
-
-		<div class="container text-center">
-			<h2>Estimado no tiene acceso al sistema</h2>
-			<p class="lead mt-3">
-				Ingrese sus credenciales correctamente o solicite credenciales al encargado
-			</p>
-
-			<button class="btn btn-primary mt-4" @onclick=NavegarAListado>
-				Ir a Login
-			</button>
-
-			<!-- Texto con animación automática -->
-			<p class="no-acceso-text @(animacionIniciada ? "show" : "") mt-5">
-				<span>UPS...</span> no tienes acceso
-			</p>
-		</div>
-
-		@code {
-		private bool animacionIniciada = false;
-
-		protected override async Task OnAfterRenderAsync(bool firstRender)
-		{
-			if (firstRender)
-			{
-				await Task.Delay(500);
-				animacionIniciada = true;
-
-				StateHasChanged();
-			}
-		}
-		private void NavegarAListado()
-		{
-			Navigation.NavigateTo("/");
-		}
-		}
-
-	</NotAuthorized>
-</AuthorizeView>
 
 @code {
 
-	ModeloFormulario Formulario = new ModeloFormulario();
-	List<ModeloSexo> Genero { get; set; } = null!;
-	List<ModeloPueblo> Pueblo { get; set; } = null!;
-	List<ModeloDiscapacidad> Discapacidad { get; set; } = null!;
-	List<ModeloOrientacionSexual> OrientacionSexual { get; set; } = null!;
-	List<ModeloEscolaridad> Escolaridad { get; set; } = null!;
-	List<ModeloAgricolaMigrante> Agricola { get; set; } = null!;
-	List<ModeloConsulta> Consulta { get; set; } = null!;
-	List<ModeloControlEstablecido> Control { get; set; } = null!;
-	List<ModeloViene> Vienes { get; set; } = null!;
-	List<ModeloFue> Fue { get; set; } = null!;
-	List<ModeloProfesion> Profesion { get; set; } = null!;
-	List<ModeloObtenerRegistro> obtener { get; set; } = null!;
+    ModeloFormulario Formulario = new ModeloFormulario();
+    List<ModeloSexo> Genero { get; set; } = null!;
+    List<ModeloPueblo> Pueblo { get; set; } = null!;
+    List<ModeloDiscapacidad> Discapacidad { get; set; } = null!;
+    List<ModeloOrientacionSexual> OrientacionSexual { get; set; } = null!;
+    List<ModeloEscolaridad> Escolaridad { get; set; } = null!;
+    List<ModeloAgricolaMigrante> Agricola { get; set; } = null!;
+    List<ModeloConsulta> Consulta { get; set; } = null!;
+    List<ModeloControlEstablecido> Control { get; set; } = null!;
+    List<ModeloViene> Vienes { get; set; } = null!;
+    List<ModeloFue> Fue { get; set; } = null!;
+    List<ModeloProfesion> Profesion { get; set; } = null!;
+    List<ModeloObtenerRegistro> obtener { get; set; } = null!;
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Genero = ConsultasSql.obtenerSexo();
+            Pueblo = ConsultasSql.obtenerPueblo();
+            Discapacidad = ConsultasSql.obtenerDiscapacidad();
+            OrientacionSexual = ConsultasSql.ObtenerOrientacionSexual();
+            Escolaridad = ConsultasSql.obtenerEscolaridad();
+            Agricola = ConsultasSql.obtenerAgricolaMigrante();
+            Consulta = ConsultasSql.obtenerConsulta();
+            Control = ConsultasSql.obteberControl();
+            Vienes = ConsultasSql.obtenerViene();
+            Fue = ConsultasSql.obtenerFue();
+            Profesion = ConsultasSql.obtenerProfesion();
+            var authState = await authenticationState;
+            var user = authState;
+        }
+        catch (Exception)
+        {
 
-	protected override void OnInitialized()
-	{
-		Genero = ConsultasSql.obtenerSexo();
-		Pueblo = ConsultasSql.obtenerPueblo();
-		Discapacidad = ConsultasSql.obtenerDiscapacidad();
-		OrientacionSexual = ConsultasSql.ObtenerOrientacionSexual();
-		Escolaridad = ConsultasSql.obtenerEscolaridad();
-		Agricola = ConsultasSql.obtenerAgricolaMigrante();
-		Consulta = ConsultasSql.obtenerConsulta();
-		Control = ConsultasSql.obteberControl();
-		Vienes = ConsultasSql.obtenerViene();
-		Fue = ConsultasSql.obtenerFue();
-		Profesion = ConsultasSql.obtenerProfesion();
-		obtener = ConsultasSql.obtenerRegistrosDiario();
-	}
-	private BusquedaModel busquedaModel = new BusquedaModel();
-	public class BusquedaModel
-	{
-		public string DPI { get; set; } = string.Empty;
-	}
 
-	public void InsertForm()
-	{
-		ConsultasSql.InsertConsultaPaciente(Formulario);
-	}
+        }
+        obtener = ConsultasSql.obtenerRegistrosDiario();
+    }
+    private BusquedaModel busquedaModel = new BusquedaModel();
+    public class BusquedaModel
+    {
+        public string DPI { get; set; } = string.Empty;
+    }
 
-	private void BuscarRegistro(string cui)
-	{
+    public void InsertForm()
+    {
+        ConsultasSql.InsertConsultaPaciente(Formulario);
+    }
 
-		obtener = ConsultasSql.obtenerRegistrosDiario(Formulario.cui);
-		if (obtener.Count > 0)
-		{
-			Formulario.cui = obtener[0].cui;
-			Formulario.fecha_nacimiento = obtener[0].fechaNacimiento;
-			Formulario.nombres_y_apellidos = obtener[0].nombresYapellidos;
-			Formulario.comunidad_linguistica = obtener[0].comunidadLinguistica;
-			Formulario.comunidad_direccion = obtener[0].comunidadOdireccion;
-			Formulario.municipio = obtener[0].municipio;
-			Formulario.sexo = obtener[0].idSexo;
-			Formulario.profesion_u_oficio = obtener[0].idProfesion;
-			Formulario.pueblo = obtener[0].idPueblo;
-			Formulario.discapacidad = obtener[0].idDiscapacidad;
-			Formulario.orientacion_sexual = obtener[0].idOrientacionSexual;
-			Formulario.escolaridad = obtener[0].idEscolaridad;
-		}
-	}
+    private void BuscarRegistro(string cui)
+    {
+
+        obtener = ConsultasSql.obtenerRegistrosDiario(Formulario.cui);
+        if (obtener.Count > 0)
+        {
+            Formulario.cui = obtener[0].cui;
+            Formulario.fecha_nacimiento = obtener[0].fechaNacimiento;
+            Formulario.nombres_y_apellidos = obtener[0].nombresYapellidos;
+            Formulario.comunidad_linguistica = obtener[0].comunidadLinguistica;
+            Formulario.comunidad_direccion = obtener[0].comunidadOdireccion;
+            Formulario.municipio = obtener[0].municipio;
+            Formulario.sexo = obtener[0].idSexo;
+            Formulario.profesion_u_oficio = obtener[0].idProfesion;
+            Formulario.pueblo = obtener[0].idPueblo;
+            Formulario.discapacidad = obtener[0].idDiscapacidad;
+            Formulario.orientacion_sexual = obtener[0].idOrientacionSexual;
+            Formulario.escolaridad = obtener[0].idEscolaridad;
+        }
+    }
 }

@@ -2,9 +2,8 @@
 <PageTitle>VER ESTADISTICAS</PageTitle>
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthStateProvider
+@attribute [Authorize(Roles = "Admin")]
 
-<AuthorizeView>
-	<Authorized>
 		<div class="header-container">
 			<div class="top-banner">
 				<span>ESTAMOS PARA SERVIR Y LA POBLACIÓN Y AYUDARLOS A MEJORAR SU CALIDAD DE VIDA</span>
@@ -19,76 +18,20 @@
 			<h4 class="titulo-en-desarrollo mb-4">Apartado en Desarrollo</h4>
 			<div class="animacion-espera"></div>	
 		</div>
-	</Authorized>
-
-	<NotAuthorized>
-		<style>
-			/* Estilo inicial del mensaje */
-			.no-acceso-text {
-				font-size: 1.5rem;
-				font-weight: bold;
-				color: red;
-				opacity: 0;
-				transform: translateY(-20px);
-				transition: opacity 1s ease-in-out, transform 0.1s ease-in-out;
-			}
-
-				/* Estado visible con animación */
-				.no-acceso-text.show {
-					opacity: 1;
-					transform: translateY(0);
-				}
-
-			/* Estilo general del contenedor */
-			.container {
-				margin-top: 50px;
-			}
-
-			/* Botón con animación al hacer hover */
-			.btn-primary {
-				transition: background-color 0.3s ease, transform 0.2s;
-			}
-
-				.btn-primary:hover {
-					background-color: #0056b3;
-					transform: scale(1.05);
-				}
-		</style>
-
-		<div class="container text-center">
-			<h2>Estimado no tiene acceso al sistema</h2>
-			<p class="lead mt-3">
-				Ingrese sus credenciales correctamente o solicite credenciales al encargado
-			</p>
-
-			<button class="btn btn-primary mt-4" @onclick=NavegarAListado>
-				Ir a Login
-			</button>
-
-			<!-- Texto con animación automática -->
-			<p class="no-acceso-text @(animacionIniciada ? "show" : "") mt-5">
-				<span>UPS...</span> no tienes acceso
-			</p>
-		</div>
-
-		@code {
-		private bool animacionIniciada = false;
-
-		protected override async Task OnAfterRenderAsync(bool firstRender)
+	@code{
+	[CascadingParameter]
+	private Task<AuthenticationState> authenticationState { get; set; }
+	protected override async Task OnInitializedAsync()
+	{
+		try
 		{
-			if (firstRender)
-			{
-				await Task.Delay(500);
-				animacionIniciada = true;
-
-				StateHasChanged();
-			}
+			var authState = await authenticationState;
+			var user = authState;
 		}
-		private void NavegarAListado()
+		catch (Exception)
 		{
-			Navigation.NavigateTo("/");
-		}
-		}
 
-	</NotAuthorized>
-</AuthorizeView>
+
+		}
+	}
+	}

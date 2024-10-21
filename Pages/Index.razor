@@ -1,11 +1,10 @@
 ﻿@page "/inicio"
 @inject IJSRuntime js
-@attribute [Authorize]
+@attribute [Authorize(Roles ="Admin")]
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthStateProvider
 <PageTitle>PAGINA PRINCIPAL</PageTitle>
-<AuthorizeView>
-	<Authorized>
+
 		<body id="page-top">
 			<!-- Navigation-->
 			<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
@@ -17,8 +16,8 @@
 					</button>
 					<div class="collapse navbar-collapse" id="navbarResponsive">
 						<ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-							<li class="nav-item"><a class="nav-link" href="#portfolio">TAREAS A REALIZAR</a></li>
-							<li class="nav-item"><a class="nav-link" href="#team">EQUIPO</a></li>
+					<li class="nav-item"><a class="nav-link" href="javascript:void(0)" @onclick="() => ScrollToPortfolio()">TAREAS A REALIZAR</a></li>
+					<li class="nav-item"><a class="nav-link" href="javascript:void(0)" @onclick="() => ScrollToTeam()">EQUIPO</a></li>
 							<li class="nav-item"><a class="nav-link" href="#" @onclick="Logout">SALIR</a></li>
 						</ul>
 					</div>
@@ -29,7 +28,7 @@
 				<div class="container">
 					<div class="masthead-subheading">BIENVENIDA ESTIMADA <a href="#usuario"></a></div>
 					<div class="masthead-heading text-uppercase">En un placer trabajar de forma digital</div>
-					<a class="btn btn-primary btn-xl text-uppercase" href="#portfolio">Ir a las Tareas</a>
+			<a class="btn btn-primary btn-xl text-uppercase" href="javascript:void(0)" @onclick="() => ScrollToPortfolio()">Ir a las Tareas</a>
 				</div>
 			</header>
 			<!-- Portfolio Grid-->
@@ -182,79 +181,18 @@
 			<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
 			<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 		</body>
-	</Authorized>
 
-	<NotAuthorized>
-		<style>
-			/* Estilo inicial del mensaje */
-			.no-acceso-text {
-				font-size: 1.5rem;
-				font-weight: bold;
-				color: red;
-				opacity: 0;
-				transform: translateY(-20px);
-				transition: opacity 1s ease-in-out, transform 0.1s ease-in-out;
-			}
-
-				/* Estado visible con animación */
-				.no-acceso-text.show {
-					opacity: 1;
-					transform: translateY(0);
-				}
-
-			/* Estilo general del contenedor */
-			.container {
-				margin-top: 50px;
-			}
-
-			/* Botón con animación al hacer hover */
-			.btn-primary {
-				transition: background-color 0.3s ease, transform 0.2s;
-			}
-
-				.btn-primary:hover {
-					background-color: #0056b3;
-					transform: scale(1.05);
-				}
-		</style>
-
-		<div class="container text-center">
-			<h2>Estimado no tiene acceso al sistema</h2>
-			<p class="lead mt-3">
-				Ingrese sus credenciales correctamente o solicite credenciales al encargado
-			</p>
-
-			<button class="btn btn-primary mt-4" @onclick=NavegarAListado>
-				Ir a Login
-			</button>
-
-			<!-- Texto con animación automática -->
-			<p class="no-acceso-text @(animacionIniciada ? "show" : "") mt-5">
-				<span>UPS...</span> no tienes acceso
-			</p>
-		</div>
-
-		@code {
-		private bool animacionIniciada = false;
-
-		protected override async Task OnAfterRenderAsync(bool firstRender)
-		{
-			if (firstRender)
-			{
-				await Task.Delay(500);
-				animacionIniciada = true;
-
-				StateHasChanged();
-			}
+<script>
+	function scrollToSection(id) {
+		var element = document.getElementById(id);
+		if (element) {
+			element.scrollIntoView({ behavior: 'smooth' });
 		}
-		private void NavegarAListado()
-		{
-			Navigation.NavigateTo("/");
-		}
-		}
+	}
 
-	</NotAuthorized>
-</AuthorizeView>
+	
+</script>
+	
 
 @code {
 	[CascadingParameter]
@@ -275,5 +213,28 @@
 		var user = authState.User;
 
 		Console.WriteLine($"Usuario autenticado: {user.Identity?.IsAuthenticated}");
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			var authState = await authenticationState;
+			var user = authState;
+		}
+		catch (Exception)
+		{
+
+
+		}
+	}
+
+	private async Task ScrollToPortfolio()
+	{
+		await js.InvokeVoidAsync("scrollToSection", "portfolio");
+	}
+	private async Task ScrollToTeam()
+	{
+		await js.InvokeVoidAsync("scrollToSection", "team");
 	}
 }

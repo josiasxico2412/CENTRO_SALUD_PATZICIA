@@ -1,4 +1,5 @@
 ﻿@page "/new"
+@attribute [Authorize(Roles = "Admin")]
 <PageTitle>Creacion nuevo usuario</PageTitle>
 
 <div class="header-container">
@@ -20,3 +21,21 @@
     </section>
 
 </body>
+
+@code{
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var authState = await authenticationState;
+            var user = authState;
+        }
+        catch (Exception)
+        {
+
+
+        }
+    }
+}

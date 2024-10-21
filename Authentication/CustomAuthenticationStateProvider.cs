@@ -43,8 +43,7 @@ namespace CENTRO_SALUD_PATZICIA.Authentication
 				await _sessionStorage.SetAsync("UserSession", userSession);
 				claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
 				{
-					new Claim(ClaimTypes.Name, userSession.UserName),
-					new Claim(ClaimTypes.Role, userSession.Role)
+					new Claim(ClaimTypes.Name, userSession.UserName)
 				}));
 			}
 			else

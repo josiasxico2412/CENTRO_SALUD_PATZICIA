@@ -1,19 +1,25 @@
-﻿namespace CENTRO_SALUD_PATZICIA.Authentication
+﻿using CENTRO_SALUD_PATZICIA.Data;
+
+namespace CENTRO_SALUD_PATZICIA.Authentication
 {
 	public class UserAccountService
 	{
-		private List<UserAccount> _users;
-		public UserAccountService()
+		
+		public UserAccount? GetByUserName(string userName,string password)
 		{
-			_users = new List<UserAccount>
+			string resultadoDb= ConsultasSql.obtenerUsuario(userName, password);
+			UserAccount usuario = new();
+			if(string.IsNullOrEmpty(resultadoDb))
 			{
-				new UserAccount { userName = "admin", Password = "admin", Role = "Administrador" },
-				new UserAccount { userName = "user", Password = "user", Role = "User" }
-			};
-		}
-		public UserAccount? GetByUserName(string userName)
-		{
-			return _users.FirstOrDefault(x => x.userName == userName);
+				usuario.userName = string.Empty;
+			}
+			else
+			{
+				usuario.userName = resultadoDb;
+				usuario.Password= password;
+				usuario.Role = "Admin";
+			}
+			return usuario; 
 		}
 	}
 }

@@ -7,7 +7,7 @@ namespace CENTRO_SALUD_PATZICIA.Data
 {
     public class ConsultasSql
     {
-        public static string cadenaConexion { get; set; } = "Data Source=localhost;Initial Catalog=Pruebas;User ID=sa;Password=12345;Encrypt=False";
+        public static string cadenaConexion { get; set; } = "Data Source=localhost;Initial Catalog=JOSIAS;User ID=sa;Password=123;Encrypt=False";
 
         public ConsultasSql()
         {
@@ -791,34 +791,69 @@ namespace CENTRO_SALUD_PATZICIA.Data
             }
             return resultadoConsulta;
         }
-		public static void InsertEncabezado(ModeloEncabezado encabezado)
-		{
-			using (SqlConnection connection = new SqlConnection(cadenaConexion))
-			{
-				using (SqlCommand command = new SqlCommand("InsertarEncabezado", connection))
-				{
-					command.CommandType = CommandType.StoredProcedure;
+        public static void InsertEncabezado(ModeloEncabezado encabezado)
+        {
+            using (SqlConnection connection = new SqlConnection(cadenaConexion))
+            {
+                using (SqlCommand command = new SqlCommand("InsertarEncabezado", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
 
-					// Agregar parámetros si es necesario
-					command.Parameters.AddWithValue("@Area_Salud", encabezado.areaSalud);
-					command.Parameters.AddWithValue("@DistritoSalud", encabezado.distritoSalud);
-					command.Parameters.AddWithValue("@Municipio", encabezado.municipio);
-					command.Parameters.AddWithValue("@Servicio_Salud", encabezado.servicioSalud);
-					command.Parameters.AddWithValue("@ResponsableInformacion", encabezado.responsableInformacion);
-					command.Parameters.AddWithValue("@Cargo", encabezado.cargo);
-					command.Parameters.AddWithValue("@Firma", encabezado.firma);
-					connection.Open();
-					try
-					{
-						int guardar = command.ExecuteNonQuery();
-					}
-					catch (Exception e)
-					{
+                    // Agregar parámetros si es necesario
+                    command.Parameters.AddWithValue("@Area_Salud", encabezado.areaSalud);
+                    command.Parameters.AddWithValue("@DistritoSalud", encabezado.distritoSalud);
+                    command.Parameters.AddWithValue("@Municipio", encabezado.municipio);
+                    command.Parameters.AddWithValue("@Servicio_Salud", encabezado.servicioSalud);
+                    command.Parameters.AddWithValue("@ResponsableInformacion", encabezado.responsableInformacion);
+                    command.Parameters.AddWithValue("@Cargo", encabezado.cargo);
+                    command.Parameters.AddWithValue("@Firma", encabezado.firma);
+                    connection.Open();
+                    try
+                    {
+                        int guardar = command.ExecuteNonQuery();
+                    }
+                    catch (Exception e)
+                    {
 
-					}// Usar ExecuteReader, ExecuteScalar o ExecuteNonQuery según el    aso
-				}
-			}
+                    }// Usar ExecuteReader, ExecuteScalar o ExecuteNonQuery según el    aso
+                }
+            }
 
-		}
-	}
+        }
+
+        public static string obtenerUsuario(string userName, string password)
+        {
+            string consulta = $"select Nombre_Usuario from Usuario where Nombre_Usuario='{userName}' and Contrasena='{password}'";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(cadenaConexion))
+                {
+                    using (SqlCommand command = new SqlCommand(consulta, connection))
+                    {
+
+                        connection.Open();
+
+                        object result = command.ExecuteScalar();
+                        connection.Close();
+                        if (result != null)
+                        {
+                            return result.ToString()!;
+
+                        }
+                        else
+                        {
+                            return string.Empty;
+                        }
+                    }
+                } 
+            }
+            catch 
+            {
+
+                return string.Empty;
+            }
+           
+        }
+    }
 }

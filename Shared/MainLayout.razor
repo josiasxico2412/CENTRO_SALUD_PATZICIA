@@ -5,17 +5,71 @@
 
 <AuthorizeView>
 	<Authorized>
+		@Body
 	</Authorized>
 	<NotAuthorized>
+		<style>
+			/* Estilo inicial del mensaje */
+			.no-acceso-text {
+				font-size: 1.5rem;
+				font-weight: bold;
+				color: red;
+				opacity: 0;
+				transform: translateY(-20px);
+				transition: opacity 1s ease-in-out, transform 0.1s ease-in-out;
+			}
+
+				/* Estado visible con animación */
+				.no-acceso-text.show {
+					opacity: 1;
+					transform: translateY(0);
+				}
+
+			/* Estilo general del contenedor */
+			.container {
+				margin-top: 50px;
+			}
+
+			/* Botón con animación al hacer hover */
+			.btn-primary {
+				transition: background-color 0.3s ease, transform 0.2s;
+			}
+
+				.btn-primary:hover {
+					background-color: #0056b3;
+					transform: scale(1.05);
+				}
+		</style>
+
+		<div class="container text-center">
+			<h2>Estimado no tiene acceso al sistema</h2>
+			<p class="lead mt-3">
+				Ingrese sus credenciales correctamente o solicite credenciales al encargado
+			</p>
+
+			<button class="btn btn-primary mt-4" @onclick=NavegarAListado>
+				Ir a Login
+			</button>
+
+			<!-- Texto con animación automática -->
+			<p class="no-acceso-text @(animacionIniciada ? "show" : "") mt-5">
+				<span>UPS...</span> no tienes acceso
+			</p>
+		</div>
 
 	</NotAuthorized>
 </AuthorizeView>
-@Body
+
 @code{
+	private bool animacionIniciada = false;
 	private async Task Logout()
 	{
 		var customAuthStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
 		await customAuthStateProvider.UpdateAuthenticationState(null);
 		Navigation.NavigateTo("/", true);
+	}
+	private void NavegarAListado()
+	{
+		Navigation.NavigateTo("/");
 	}
 }
