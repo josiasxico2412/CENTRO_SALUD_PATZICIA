@@ -1,6 +1,7 @@
 ﻿@page "/citas"
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthStateProvider
+@inject IJSRuntime js
 <PageTitle>AGENDAR CITAS</PageTitle>
 @attribute [Authorize(Roles = "Admin")]
 

@@ -2,6 +2,7 @@
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthStateProvider
 @attribute [Authorize(Roles = "Admin")]
+@inject IJSRuntime js
 <PageTitle>EDITAR REGISTROS</PageTitle>
 
 <div class="header-container">
@@ -419,8 +420,26 @@
         }
         mostrarTabla = true;
     }
-    public void ActualizarForm()
+    public async Task ActualizarForm()
     {
-        ConsultasSql.UpdateConsultaPaciente(Formulario);
+        Formulario.edad = calcularEdad(Formulario.fecha_nacimiento);
+        bool seActualizo=ConsultasSql.UpdateConsultaPaciente(Formulario);
+
+
+        if (seActualizo)
+        {
+            await js.InvokeVoidAsync("alert", "El registro se actualizó correctamente");
+            Formulario = new();
+        }
+        else
+        {
+            await js.InvokeVoidAsync("alert", "Ocurrió un error al actualizar el registro, contacte a soporte");
+        }
+    }
+
+    protected int calcularEdad(DateTime fechaNacimiento)
+    {
+        DateTime fechaActual = DateTime.Now;
+        return fechaActual.Year - fechaNacimiento.Year;
     }
 }

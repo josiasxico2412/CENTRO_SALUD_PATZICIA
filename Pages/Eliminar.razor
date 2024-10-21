@@ -1,6 +1,7 @@
 ﻿@page "/encabezado"
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthStateProvider
+@inject IJSRuntime js
 <PageTitle>ENCABEZADO REGISTROS</PageTitle>
 @attribute [Authorize(Roles = "Admin")]
 
@@ -62,9 +63,18 @@
     ModeloEncabezado Encabezado = new ModeloEncabezado();
     [CascadingParameter]
     private Task<AuthenticationState> authenticationState { get; set; }
-    public void InsertEncabezado()
+    public async Task InsertEncabezado()
     {
-        ConsultasSql.InsertEncabezado(Encabezado);
+        bool seInserto=ConsultasSql.InsertEncabezado(Encabezado);
+        if (seInserto)
+        {
+            await js.InvokeVoidAsync("alert", "El encabezado se insertó correctamente");
+            Encabezado = new();
+        }
+        else
+        {
+            await js.InvokeVoidAsync("alert", "Ocurrió un error la tratar de insertar el encabezado, contacte a soporte");
+        }
     }
     protected override async Task OnInitializedAsync()
     {

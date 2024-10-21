@@ -2,6 +2,7 @@
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthStateProvider
 @attribute [Authorize(Roles = "Admin")]
+@inject IJSRuntime js
 <PageTitle>REGISTROS</PageTitle>
 
 
@@ -343,9 +344,18 @@
         public string DPI { get; set; } = string.Empty;
     }
 
-    public void InsertForm()
+    public async Task InsertForm()
     {
-        ConsultasSql.InsertConsultaPaciente(Formulario);
+        bool seInserto=ConsultasSql.InsertConsultaPaciente(Formulario);
+        if (seInserto)
+        {
+            await js.InvokeVoidAsync("alert", "El registro se insertó correctamente");
+            Formulario = new();
+        }
+        else
+        {
+            await js.InvokeVoidAsync("alert", "Ocurrió un error al insertar el registro, contacte a soporte");
+        }
     }
 
     private void BuscarRegistro(string cui)

@@ -421,8 +421,9 @@ namespace CENTRO_SALUD_PATZICIA.Data
             }
             return resultadoConsulta;
         }
-        public static void InsertConsultaPaciente(ModeloFormulario formulario)
+        public static bool InsertConsultaPaciente(ModeloFormulario formulario)
         {
+            int guardar = 0;
             using (SqlConnection connection = new SqlConnection(cadenaConexion))
             {
                 using (SqlCommand command = new SqlCommand("InsertarRegistro", connection))
@@ -467,18 +468,22 @@ namespace CENTRO_SALUD_PATZICIA.Data
                     connection.Open();
                     try
                     {
-                        int guardar = command.ExecuteNonQuery();
+                        guardar = command.ExecuteNonQuery();
                     }
-                    catch (Exception e)
+                    catch
                     {
-
+                        guardar = 0;
                     }// Usar ExecuteReader, ExecuteScalar o ExecuteNonQuery según el caso
+                    connection.Close();
+
+                    return guardar == 8 ? true : false;
                 }
             }
 
         }
-        public static void UpdateConsultaPaciente(ModeloFormulario formulario)
+        public static bool UpdateConsultaPaciente(ModeloFormulario formulario)
         {
+            int guardar = 0;
             using (SqlConnection connection = new SqlConnection(cadenaConexion))
             {
                 using (SqlCommand command = new SqlCommand("ActualizarRegistro", connection))
@@ -520,15 +525,18 @@ namespace CENTRO_SALUD_PATZICIA.Data
                     command.Parameters.AddWithValue("@Lugar_Notificacion", formulario.lugar_notificacion);
                     command.Parameters.AddWithValue("@Numero_Notificacion", formulario.numero_notificacion);
                     command.Parameters.AddWithValue("@Nombre_Apellidos_Acompañante", formulario.nombres_y_apellidos_acompañante);
+                    command.Parameters.AddWithValue("@edad", formulario.edad);
                     connection.Open();
                     try
                     {
-                        int guardar = command.ExecuteNonQuery();
+                        guardar = command.ExecuteNonQuery();
                     }
                     catch (Exception e)
                     {
-
-                    }// Usar ExecuteReader, ExecuteScalar o ExecuteNonQuery según el caso
+                        guardar = 0;
+                    }// Usar ExecuteReader, ExecuteScalar o ExecuteNonQuery según el
+                    connection.Close();
+                    return guardar == 9 ? true : false;
                 }
             }
 
@@ -791,8 +799,9 @@ namespace CENTRO_SALUD_PATZICIA.Data
             }
             return resultadoConsulta;
         }
-        public static void InsertEncabezado(ModeloEncabezado encabezado)
+        public static bool InsertEncabezado(ModeloEncabezado encabezado)
         {
+            int guardar = 0;
             using (SqlConnection connection = new SqlConnection(cadenaConexion))
             {
                 using (SqlCommand command = new SqlCommand("InsertarEncabezado", connection))
@@ -810,14 +819,16 @@ namespace CENTRO_SALUD_PATZICIA.Data
                     connection.Open();
                     try
                     {
-                        int guardar = command.ExecuteNonQuery();
+                        guardar = command.ExecuteNonQuery();
                     }
                     catch (Exception e)
                     {
-
+                        guardar = 0;
                     }// Usar ExecuteReader, ExecuteScalar o ExecuteNonQuery según el    aso
+                    connection.Close();
                 }
             }
+            return guardar == 1 ? true : false;
 
         }
 
@@ -846,14 +857,15 @@ namespace CENTRO_SALUD_PATZICIA.Data
                             return string.Empty;
                         }
                     }
-                } 
+                }
             }
-            catch 
+            catch
             {
 
                 return string.Empty;
             }
-           
+
         }
+
     }
 }
