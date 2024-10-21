@@ -1,0 +1,163 @@
+﻿@page "/citas"
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
+<PageTitle>AGENDAR CITAS</PageTitle>
+
+<AuthorizeView>
+	<Authorized>
+		<div class="header-container">
+			<div class="top-banner">
+				<span>ESTAMOS PARA SERVIR Y LA POBLACIÓN Y AYUDARLOS A MEJORAR SU CALIDAD DE VIDA</span>
+				<a href="/inicio" class="btn btn-danger exit-button">Volver</a>
+			</div>
+			<div class="main-title">
+				CENTRO DE SALUD PATZICIA
+			</div>
+		</div>
+
+		<h4 class="text-center">user está en el módulo de Agendar Citas</h4>
+		<div class="container mt-4">
+			<div class="row g-3">
+				<div class="col-md-4">
+					<label for="nombre" class="form-label">Nombre</label>
+					<input type="text" id="nombre" class="form-control"
+						   @bind="busquedaModel.Nombre"
+						   placeholder="Ingrese su nombre" />
+				</div>
+				<div class="col-md-4">
+					<label for="dpi" class="form-label">DPI</label>
+					<input type="text" id="dpi" class="form-control"
+						   @bind="busquedaModel.DPI"
+						   placeholder="Ingrese su DPI" />
+				</div>
+				<div class="col-md-4">
+					<label for="fecha" class="form-label">Fecha</label>
+					<input type="date" id="fecha" class="form-control"
+						   @bind="busquedaModel.Fecha" />
+				</div>
+			</div>
+
+			<!-- Segunda fila de inputs -->
+			<div class="row g-3 mt-3">
+				<div class="col-md-6">
+					<label for="descripcion" class="form-label">Descripción de la cita</label>
+					<input type="text" id="descripcion" class="form-control"
+						   @bind="busquedaModel.Descripcion"
+						   placeholder="Descripción o área de cita" />
+				</div>
+				<div class="col-md-6">
+					<label for="telefono" class="form-label">Teléfono</label>
+					<input type="tel" id="telefono" class="form-control"
+						   placeholder="Ingrese su teléfono" />
+				</div>
+			</div>
+
+			<!-- Tercera fila de inputs -->
+			<div class="row g-3 mt-3">
+				<div class="col-md-6">
+					<label for="hora" class="form-label">Hora de la cita</label>
+					<input type="time" id="hora" class="form-control" />
+				</div>
+				<div class="col-md-6">
+					<label for="area" class="form-label">Área Médica</label>
+					<input type="text" id="area" class="form-control"
+						   placeholder="Área médica correspondiente" />
+				</div>
+			</div>
+
+			<!-- Botón para agendar cita -->
+			<div class="row mt-4">
+				<div class="col-12 text-center">
+					<button type="button" class="btn btn-outline-danger">
+						AGENDAR CITA
+					</button>
+				</div>
+			</div>
+		</div>
+
+	</Authorized>
+
+	<NotAuthorized>
+		<style>
+			/* Estilo inicial del mensaje */
+			.no-acceso-text {
+				font-size: 1.5rem;
+				font-weight: bold;
+				color: red;
+				opacity: 0;
+				transform: translateY(-20px);
+				transition: opacity 1s ease-in-out, transform 0.1s ease-in-out;
+			}
+
+				/* Estado visible con animación */
+				.no-acceso-text.show {
+					opacity: 1;
+					transform: translateY(0);
+				}
+
+			/* Estilo general del contenedor */
+			.container {
+				margin-top: 50px;
+			}
+
+			/* Botón con animación al hacer hover */
+			.btn-primary {
+				transition: background-color 0.3s ease, transform 0.2s;
+			}
+
+				.btn-primary:hover {
+					background-color: #0056b3;
+					transform: scale(1.05);
+				}
+		</style>
+
+		<div class="container text-center">
+			<h2>Estimado no tiene acceso al sistema</h2>
+			<p class="lead mt-3">
+				Ingrese sus credenciales correctamente o solicite credenciales al encargado
+			</p>
+
+			<button class="btn btn-primary mt-4" @onclick=NavegarAListado>
+				Ir a Login
+			</button>
+
+			<!-- Texto con animación automática -->
+			<p class="no-acceso-text @(animacionIniciada ? "show" : "") mt-5">
+				<span>UPS...</span> no tienes acceso
+			</p>
+		</div>
+
+		@code {
+		private bool animacionIniciada = false;
+
+		protected override async Task OnAfterRenderAsync(bool firstRender)
+		{
+			if (firstRender)
+			{
+				await Task.Delay(500);
+				animacionIniciada = true;
+
+				StateHasChanged();
+			}
+		}
+		private void NavegarAListado()
+		{
+			Navigation.NavigateTo("/");
+		}
+		}
+
+	</NotAuthorized>
+</AuthorizeView>
+
+@code {
+	private BusquedaModel busquedaModel = new BusquedaModel();
+
+
+	public class BusquedaModel
+	{
+		public string Nombre { get; set; } = string.Empty;
+		public string DPI { get; set; } = string.Empty;
+		public DateTime? Fecha { get; set; }
+		public string Descripcion { get; set; } = string.Empty;
+	}
+}

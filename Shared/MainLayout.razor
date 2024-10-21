@@ -1,0 +1,21 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
+<PageTitle>CENTRO SALUD PATZICIA</PageTitle>
+
+<AuthorizeView>
+	<Authorized>
+	</Authorized>
+	<NotAuthorized>
+
+	</NotAuthorized>
+</AuthorizeView>
+@Body
+@code{
+	private async Task Logout()
+	{
+		var customAuthStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
+		await customAuthStateProvider.UpdateAuthenticationState(null);
+		Navigation.NavigateTo("/", true);
+	}
+}

@@ -1,0 +1,141 @@
+﻿@page "/encabezado"
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
+<PageTitle>ENCABEZADO REGISTROS</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <div class="header-container">
+            <div class="top-banner">
+                <span>ESTAMOS PARA SERVIR Y LA POBLACIÓN Y AYUDARLOS A MEJORAR SU CALIDAD DE VIDA</span>
+                <a href="/inicio" class="btn btn-danger exit-button">Volver</a>
+            </div>
+            <div class="main-title">
+                CENTRO DE SALUD PATZICIA
+            </div >
+        </div>
+
+        @using Microsoft.AspNetCore.Components.Web
+
+        <h4 class="text-center">user está en el módulo de Encabezado</h4>
+        <div class="container my-5">
+            <h4>Datos Generales del Servicio</h4>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="areaSalud" class="form-label">Área de Salud</label>
+                    <input type="text" class="form-control" id="areaSalud" @bind-value="Encabezado.areaSalud"  placeholder="Ingrese el Área de Salud">
+                </div>
+                <div class="col-md-6">
+                    <label for="distritoSalud" class="form-label">Distrito de Salud</label>
+                    <input type="text" class="form-control" id="distritoSalud" @bind-value="Encabezado.distritoSalud" placeholder="Ingrese el Distrito de Salud">
+                </div>
+                <div class="col-md-6">
+                    <label for="municipio" class="form-label">Municipio</label>
+                    <input type="text" class="form-control" id="municipio" @bind-value="Encabezado.municipio" placeholder="Ingrese el Municipio">
+                </div>
+                <div class="col-md-6">
+                    <label for="servicioSalud" class="form-label">Servicio de Salud</label>
+                    <input type="text" class="form-control" id="servicioSalud" @bind-value="Encabezado.servicioSalud" placeholder="Ingrese el Servicio de Salud">
+                </div>
+                <div class="col-md-6">
+                    <label for="responsableInformacion" class="form-label">Responsable de la Información</label>
+                    <input type="text" class="form-control" id="responsableInformacion" @bind-value="Encabezado.responsableInformacion" placeholder="Ingrese el Nombre">
+                </div>
+                <div class="col-md-6">
+                    <label for="cargo" class="form-label">Cargo</label>
+                    <input type="text" class="form-control" id="cargo" @bind-value="Encabezado.cargo" placeholder="Ingrese el Cargo">
+                </div>
+                <div class="col-md-4">
+                    <label for="firma" class="form-label">Firma</label>
+                    <input type="text" class="form-control" id="firma" @bind-value="Encabezado.firma" placeholder="Firma">
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <button class="btn btn-outline-info" @onclick="InsertEncabezado">GUARDAR REGISTRO</button>
+                    <button type="button" class="btn btn-outline-danger">CANCELAR</button>
+                </div>
+            </div>
+        </div>
+    </Authorized>
+
+    <NotAuthorized>
+        <style>
+            /* Estilo inicial del mensaje */
+            .no-acceso-text {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: red;
+                opacity: 0; 
+                transform: translateY(-20px); 
+                transition: opacity 1s ease-in-out, transform 0.1s ease-in-out; 
+            }
+
+                /* Estado visible con animación */
+                .no-acceso-text.show {
+                    opacity: 1; 
+                    transform: translateY(0);
+                }
+
+            /* Estilo general del contenedor */
+            .container {
+                margin-top: 50px;
+            }
+
+            /* Botón con animación al hacer hover */
+            .btn-primary {
+                transition: background-color 0.3s ease, transform 0.2s;
+            }
+
+                .btn-primary:hover {
+                    background-color: #0056b3;
+                    transform: scale(1.05); 
+                }
+        </style>
+
+        <div class="container text-center">
+            <h2>Estimado no tiene acceso al sistema</h2>
+            <p class="lead mt-3">
+                Ingrese sus credenciales correctamente o solicite credenciales al encargado
+            </p>
+
+            <button class="btn btn-primary mt-4" @onclick=NavegarAListado>
+                Ir a Login  
+            </button>
+
+            <!-- Texto con animación automática -->
+            <p class="no-acceso-text @(animacionIniciada ? "show" : "") mt-5">
+                <span>UPS...</span> no tienes acceso
+            </p>
+        </div>
+
+        @code {
+            private bool animacionIniciada = false;
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await Task.Delay(500);
+                animacionIniciada = true;
+
+                StateHasChanged();
+            }
+        }
+        private void NavegarAListado()
+        {
+            Navigation.NavigateTo("/");
+        }
+}
+
+    </NotAuthorized>    
+</AuthorizeView>
+@code{
+    ModeloEncabezado Encabezado = new ModeloEncabezado();
+
+    public void InsertEncabezado()
+    {
+        ConsultasSql.InsertEncabezado(Encabezado);
+    }
+}
