@@ -25,6 +25,39 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>Área Salud</th>
+                <th>Distrito Salud</th>
+                <th>Municipio</th>
+                <th>Servicio Salud</th>
+                <th>Responsable Información</th>
+                <th>Cargo</th>
+                <th>Mes</th>
+                <th>Año</th>
+                <th>Firma</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var con in encabezado)
+            {
+                <tr>
+                    <td>@con.Area_Salud</td>
+                    <td>@con.DistritoSalud</td>
+                    <td>@con.Municipio</td>
+                    <td>@con.Servicio_Salud</td>
+                    <td>@con.ResponsableInformacion</td>
+                    <td>@con.Cargo</td>
+                    <td>@con.Mes</td>
+                    <td>@con.Anio</td>
+                    <td>@con.Firma</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="table-responsive mt-4">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
                 <th>Día de la Consulta</th>
                 <th>No. Historia Clínica</th>
                 <th>Nombre y Apellidos del Paciente</th>
@@ -100,6 +133,7 @@
     [CascadingParameter]
     private Task<AuthenticationState> authenticationState { get; set; }
     List<ModeloObtenerRegistro> obtener { get; set; } = null!;
+    List<ModeloObtenerEncabezado> encabezado { get; set; } = null!;
     protected override async Task OnInitializedAsync()
     {
         try
@@ -107,6 +141,7 @@
             var authState = await authenticationState;
             var user = authState;
             obtener = ConsultasSql.obtenerRegistrosDiario();
+            encabezado = ConsultasSql.ObtenerEncabezado();
         }
         catch (Exception)
         {

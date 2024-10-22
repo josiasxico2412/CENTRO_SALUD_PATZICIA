@@ -22,7 +22,7 @@ builder.Services.AddAuthentication("Cookies")
 	{
 		options.LoginPath = "/inicio";  // Ruta del login
 		options.LogoutPath = "/";  // Ruta del logout
-		options.ExpireTimeSpan = TimeSpan.FromMinutes(30);  // Expira en 30 minutos
+		options.ExpireTimeSpan = TimeSpan.FromMinutes(10);// Expira en 30 minutos
 		options.SlidingExpiration = true;  // Actualiza la cookie en cada petición
 	});
 
